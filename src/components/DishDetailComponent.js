@@ -9,7 +9,7 @@ class DishDetailComponent extends Component {
                     <CardImg width="100%" src={this.props.selectedDish.image} alt={this.props.selectedDish.name}></CardImg>
                     <CardBody>
                         <CardTitle>{this.props.selectedDish.name}</CardTitle>
-                        <CardText>{this.props.selectedDish.description}</CardText>
+                        <CardText style={{color: '#353535'}}>{this.props.selectedDish.description}</CardText>
                     </CardBody>
                 </Card>
             </div>
