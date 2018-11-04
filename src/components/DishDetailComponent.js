@@ -2,15 +2,30 @@ import React, { Component } from 'react';
 import { Card, CardTitle, CardBody, CardImg, CardText } from 'reactstrap';
 
 class DishDetailComponent extends Component {
+
+    renderComment = (comments) => {
+        return (
+            comments.map((comment) => {
+                return (
+                    <div className="row m-1" key={comment.id}>
+                        <div className="m-2">{comment.comment}</div>
+                        <div className="m-2">-- {comment.author}, {comment.date}</div>
+                    </div>
+                )
+            })
+        );
+    }
+
     render() {
-        const comments = this.props.selectedDish.comments.map((comment) => {
-            return (
-                <div className="row m-1" key={comment.id}>
-                    <div className="m-2">{comment.comment}</div>
-                    <div className="m-2">-- {comment.author}, {comment.date}</div>
-                </div>
-            );
-        })
+
+        // const comments = this.props.selectedDish.comments.map((comment) => {
+        //     return (
+        //         <div className="row m-1" key={comment.id}>
+        //             <div className="m-2">{comment.comment}</div>
+        //             <div className="m-2">-- {comment.author}, {comment.date}</div>
+        //         </div>
+        //     );
+        // })
 
         return (
             <React.Fragment>
@@ -25,7 +40,8 @@ class DishDetailComponent extends Component {
                 </div>
                 <div className="col-12 col-md-5 m-1">
                     <h2>Comments</h2>
-                    {comments}
+                    {/* {comments} */}
+                    {this.renderComment(this.props.selectedDish.comments)}
                 </div>
             </React.Fragment>
         );
