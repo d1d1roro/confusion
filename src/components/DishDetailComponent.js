@@ -3,47 +3,67 @@ import { Card, CardTitle, CardBody, CardImg, CardText } from 'reactstrap';
 
 class DishDetailComponent extends Component {
 
-    renderComment = (comments) => {
-        return (
-            comments.map((comment) => {
+    onSelectedDishRender = (dish) => {
+        if (dish === undefined) {
+            return (
+                <div></div>
+            );
+        } else {
+            return (
+                <Card>
+                    <CardImg width="100%" src={dish.image} alt={dish.name}></CardImg>
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+            );
+        }
+    }
+
+    onCommentsRedner = (dish) => {
+        if (dish === undefined) {
+            return (
+                <div></div>
+            );
+        } else {
+            const comment = dish.comments.map((comment) => {
                 return (
                     <div className="row m-1" key={comment.id}>
                         <div className="m-2">{comment.comment}</div>
-                        <div className="m-2">-- {comment.author}, {comment.date}</div>
+                        <div className="m-2">
+                            -- {comment.author},
+                            {
+                                new Intl.DateTimeFormat(
+                                    'en-US',
+                                    { year: 'numeric', month: 'short', day: '2-digit' }
+                                ).format(new Date(Date.parse(comment.date)))
+                            }
+                        </div>
                     </div>
-                )
-            })
-        );
+                );
+            });
+
+            return (
+                <div className="col-12 col-md-5 m-1">
+                    <h2>Comments</h2>
+                    { comment }
+                </div>
+            );
+        }
     }
 
     render() {
 
-        // const comments = this.props.selectedDish.comments.map((comment) => {
-        //     return (
-        //         <div className="row m-1" key={comment.id}>
-        //             <div className="m-2">{comment.comment}</div>
-        //             <div className="m-2">-- {comment.author}, {comment.date}</div>
-        //         </div>
-        //     );
-        // })
-
         return (
-            <React.Fragment>
-                <div className="col-12 col-md-5 m-1">
-                    <Card>
-                        <CardImg width="100%" src={this.props.selectedDish.image} alt={this.props.selectedDish.name}></CardImg>
-                        <CardBody>
-                            <CardTitle>{this.props.selectedDish.name}</CardTitle>
-                            <CardText style={{color: '#353535'}}>{this.props.selectedDish.description}</CardText>
-                        </CardBody>
-                    </Card>
+            <div className="container" >
+                <div className="row">
+                    <div className="col-12 col-md-5 m-1">
+                        {this.onSelectedDishRender(this.props.dish)}
+                    </div>
+                    {this.onCommentsRedner(this.props.dish)}
                 </div>
-                <div className="col-12 col-md-5 m-1">
-                    <h2>Comments</h2>
-                    {/* {comments} */}
-                    {this.renderComment(this.props.selectedDish.comments)}
-                </div>
-            </React.Fragment>
+            </div>
         );
     }
 }
