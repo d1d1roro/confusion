@@ -12,6 +12,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Contact from './ContactComponent';
 import DishDetail from './DishDetailComponent';
+import About from './AboutComponent';
 
 class Main extends Component {
 
@@ -24,8 +25,6 @@ class Main extends Component {
       leaders: LEADERS
     };
   }
-
-  
 
   render() {
     const HomePage = () => {
@@ -53,6 +52,7 @@ class Main extends Component {
           <Route exact path='/menu' component={() => <Menu dishes={this.state.dishes} />} />
           <Route path='/menu/:dishId' component={DishWithId} />
           <Route exact path='/contactus' component={Contact} />} />
+          <Route exact path='/aboutus' component={() => <About leaders={this.state.leaders} />} />
           <Redirect to="/home" />
         </Switch>
         <Footer />
