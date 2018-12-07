@@ -23,6 +23,11 @@ class CommentForm extends Component {
         });
     }
 
+    handleSubmit = (values) => {
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+    }
+
     render () {
         return (
             <>
@@ -37,14 +42,14 @@ class CommentForm extends Component {
                     <ModalBody className="ml-3 mr-3">
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="Rating">Rating</Label>
-                                <Control.select model=".Rating" name="Rating" id="Rating"
+                                <Label htmlFor="rating">Rating</Label>
+                                <Control.select model=".rating" id="rating" name="rating"
                                     className="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
                                 </Control.select>
                             </Row>
                             <Row className="form-group">
