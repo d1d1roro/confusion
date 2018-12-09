@@ -10,6 +10,9 @@ const minLength = (len) => (val) => val && (val.length >= len);
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
+const labelCol = 2;
+const itemCol = 10;
+
 class Contact extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +23,82 @@ class Contact extends Component {
         console.log('Current State is: ' + JSON.stringify(values));
         alert('Current State is: ' + JSON.stringify(values));
         this.props.resetFeedbackForm();
+    }
+
+    createFormItem = (list) => {
+        return (
+            list.map((item, idx) => {
+                let detailItem = "";
+                if (item.inputType === 'text') {
+                    let validators = {};
+                    let errMsg = {};
+
+                    if (item.isRequired) {
+                        validators = {
+                            'required': required,
+                        };
+    
+                        errMsg = {
+                            'required': 'Required',
+                        };
+                    }
+
+                    if (item.type === 'normal' || item.type === 'number') {
+                        validators = {
+                            'minLength': minLength(item.minLength), 
+                            'maxLength': maxLength(item.maxLength),
+                        };
+
+                        errMsg = {
+                            'minLength': `Must be greater than ${item.minLength} characters`,
+                            'maxLength': `Must be ${item.maxLength} characters or less`,
+                        };
+
+                        if (item.type === 'number') {
+                            validators = {
+                                'isNumber': isNumber,
+                            };
+        
+                            errMsg = {
+                                'isNumber': 'Must be a number',
+                            };
+                        }
+                    } else if (item.type === 'email') {
+                        validators = {
+                            'validEmail': validEmail,
+                        };
+    
+                        errMsg = {
+                            'validEmail': 'Invalid Email Address'
+                        };
+                    }
+
+                    detailItem =
+                        <>
+                            <Control.text model={"."+item.name} id={item.name} name={item.name}
+                                placeholder={item.placeholder}
+                                className="form-control"
+                                validators={validators}
+                            />
+                            <Errors
+                                className="text-danger"
+                                model={"."+item.name}
+                                show="touched"
+                                messages={errMsg}
+                            />
+                        </>;
+                } 
+
+                return (
+                    <Row className="form-group" key={idx}>
+                        <Label htmlFor={item.name} md={labelCol}>{item.title}</Label>
+                        <Col md={itemCol}>
+                           {detailItem} 
+                        </Col>
+                    </Row>
+                );
+            })
+        );
     }
 
     render() {
@@ -67,7 +146,49 @@ class Contact extends Component {
                     </div>
                     <div className="col-12 col-md-9">
                         <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)}>
-                            <Row className="form-group">
+                            {
+                                this.createFormItem([
+                                    {
+                                        inputType: 'text',
+                                        type: 'normal',
+                                        title: "First Name",
+                                        placeholder: 'First Name',
+                                        name: "firstname",
+                                        isRequired: true,
+                                        minLength: 3,
+                                        maxLength: 15,
+                                    },
+                                    {
+                                        inputType: 'text',
+                                        type: 'normal',
+                                        title: "Last Name",
+                                        placeholder: "Last Name",
+                                        name: "lastname",
+                                        isRequired: true,
+                                        minLength: 3,
+                                        maxLength: 15,
+                                    },
+                                    {
+                                        inputType: 'text',
+                                        type: 'number',
+                                        title: "Contact Tel.",
+                                        placeholder: 'Tel. Number',
+                                        name: "telnum",
+                                        isRequired: true,
+                                        minLength: 3,
+                                        maxLength: 15,
+                                    },
+                                    {
+                                        inputType: 'text',
+                                        type: 'email',
+                                        title: "Email",
+                                        placeholder: 'Email',
+                                        name: "email",
+                                        isRequired: true,
+                                    }
+                                ])
+                            }
+                            {/* <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>
                                     <Control.text model=".firstname" id="firstname" name="firstname"
@@ -154,7 +275,7 @@ class Contact extends Component {
                                         }}
                                      />
                                 </Col>
-                            </Row>
+                            </Row> */}
                             <Row className="form-group">
                                 <Col md={{size: 6, offset: 2}}>
                                     <div className="form-check">
