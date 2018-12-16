@@ -3,6 +3,7 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'r
 import { Link } from 'react-router-dom';
 import { baseUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
+import { Fade } from 'react-animation-components';
 
 function RenderLeader({ leaders, isLoading, errMess }) {
     if (isLoading) {
@@ -101,11 +102,13 @@ function About(props) {
                 </div>
                 <div className="col-12">
                     <Media list className="pl-0">
-                        <RenderLeader
-                            leaders={props.leaders}
-                            isLoading={props.isLoading}
-                            errMess={props.errMess}
-                        />
+                        <Fade in>
+                            <RenderLeader
+                                leaders={props.leaders}
+                                isLoading={props.isLoading}
+                                errMess={props.errMess}
+                            />
+                        </Fade>
                     </Media>
                 </div>
             </div>
