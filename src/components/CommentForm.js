@@ -25,7 +25,9 @@ class CommentForm extends Component {
 
     handleSubmit = (values) => {
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        let rating = values.rating;
+        if (rating === undefined) rating = 1;
+        this.props.postComment(this.props.dishId, rating, values.author, values.comment);
     }
 
     render () {
@@ -45,11 +47,11 @@ class CommentForm extends Component {
                                 <Label htmlFor="rating">Rating</Label>
                                 <Control.select model=".rating" id="rating" name="rating"
                                     className="form-control">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
+                                    <option defaultChecked="true">1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
                                 </Control.select>
                             </Row>
                             <Row className="form-group">
